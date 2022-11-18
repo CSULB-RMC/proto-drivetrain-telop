@@ -2,7 +2,8 @@ import rclpy
 from rclpy.node import Node
 
 from sensor_msgs.msg import Joy
-from std_msgs.msg import UInt8MultiArray
+#from std_msgs.msg import UInt8MultiArray
+from std_msgs.msg import UInt8
 
 class DrivetrainSubscriber(Node):
 	
@@ -14,7 +15,8 @@ class DrivetrainSubscriber(Node):
 			self.listener_callback,
 			10)
 		self.subscription
-		self.publisher = self.create_publisher(UInt8MultiArray, 'motor_control', 10)
+		#self.publisher = self.create_publisher(UInt8MultiArray, 'motor_control', 10)
+		self.publisher = self.create_publisher(UInt8, 'motor_control', 10)
 		self.max_speed_val = 180
 		self.middle_speed_val = 90	
 	def listener_callback(self, msg):
@@ -37,9 +39,9 @@ class DrivetrainSubscriber(Node):
 		print("Left speed:", self.left_speed)
 		print("Right speed:", self.right_speed)
 		print("test")
-		self.msg_to_send = UInt8MultiArray()
+		self.msg_to_send = UInt8() #MultiArray()
 		print("Another test")
-		self.msg_to_send.data = [int(self.left_speed), int(self.right_speed)]
+		self.msg_to_send.data = int(self.left_speed)#, int(self.right_speed)]
 		
 		print(self.msg_to_send)
 		self.publisher.publish(self.msg_to_send)
